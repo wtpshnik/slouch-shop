@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SLOUCH — Drop 01, heavyweight oversized</title>
+<meta name="theme-color" content="#08080a">
+<meta name="description" content="Heavyweight cotton hoodies, sweatshirts and tees cut a size too big. Demo storefront.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="media/y2k-logo.webp">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg:#08080a; --bg2:#101013; --ink:#ececef; --soft:#a6a6ae; --line:rgba(255,255,255,.10);
+    --chrome:linear-gradient(180deg, #ffffff 0%, #dfe1e6 30%, #80848d 50%, #f1f2f5 64%, #a9adb5 82%, #f7f8fa 100%);
+    --chrome-x:linear-gradient(100deg, #9da1aa 0%, #f6f7f9 22%, #8b8f98 46%, #e9ebef 70%, #b5b9c1 100%);
+    --m:clamp(16px, 3vw, 40px);
+    --display:"Unbounded", "Arial Black", sans-serif;
+    --ease:cubic-bezier(.2,.8,.2,1);
+    --spring:cubic-bezier(.34,1.56,.64,1);
+  }
+  * { box-sizing:border-box; margin:0; }
+  html { background:var(--bg); overflow-x:clip; scroll-padding-top:96px; -webkit-tap-highlight-color:rgba(255,255,255,.12); }
+  body { background:var(--bg); color:var(--ink); font:400 clamp(16px, .95rem + .2vw, 18px)/1.55 "Inter Tight", system-ui, sans-serif; overflow-x:clip; }
+  a { color:inherit; }
+  button, a { touch-action:manipulation; }
+  img { max-width:100%; }
+  :focus-visible { outline:2px solid #fff; outline-offset:4px; border-radius:8px; }
+  h1, h2, h3 { font-weight:500; text-wrap:balance; }
+  .skip { position:absolute; left:16px; top:-80px; z-index:90; background:#fff; color:#000; padding:10px 14px; border-radius:999px; text-decoration:none; }
+  .skip:focus { top:12px; }
+
+  /* chrome text with a passing highlight */
+  .chrome { background:linear-gradient(105deg, transparent 38%, rgba(255,255,255,.95) 48%, transparent 58%) 0 0 / 260% 100% no-repeat, var(--chrome); -webkit-background-clip:text; background-clip:text; color:transparent; animation:sheen 6s var(--ease) infinite; }
+  @keyframes sheen { 0%, 55% { background-position:160% 0, 0 0; } 100% { background-position:-60% 0, 0 0; } }
+  /* split headings: the chrome fill moves onto each letter, a clipped parent can't paint through moving chars */
+  .cc { background:var(--chrome); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  /* mercury droplet (decor) */
+  .drop { position:absolute; border-radius:46% 54% 58% 42% / 52% 44% 56% 48%; pointer-events:none;
+    background:radial-gradient(circle at 32% 28%, #fff 0 6%, #dfe2e7 12%, #8a8f98 34%, #2c2f35 64%, #0c0d0f 100%);
+    box-shadow:inset -6px -10px 18px rgba(0,0,0,.55), inset 6px 8px 14px rgba(255,255,255,.35), 0 18px 40px rgba(0,0,0,.45);
+    animation:wobble 7s ease-in-out infinite; }
+  .drop { z-index:0; }
+  .say p, .tile > :not(.drop), .foot-logo, .foot-row, .sec-head { position:relative; z-index:1; }
+  @keyframes wobble { 0%,100% { border-radius:46% 54% 58% 42% / 52% 44% 56% 48%; } 33% { border-radius:58% 42% 44% 56% / 44% 58% 42% 56%; } 66% { border-radius:42% 58% 52% 48% / 58% 46% 54% 42%; } }
+
+  /* first-frame cover (removed by the intro) */
+  .cover { display:none; }
+  .motion .cover { display:block; position:fixed; inset:0; z-index:80; background:var(--bg); pointer-events:none; }
+
+  /* Dynamic-Island style notice */
+  .island { position:fixed; left:50%; top:max(10px, env(safe-area-inset-top)); z-index:66; width:126px; height:38px; margin-left:-63px; border-radius:999px; background:#000; color:#fff; overflow:hidden; opacity:0; pointer-events:none;
+    display:flex; align-items:center; gap:12px; padding:0 10px; box-shadow:0 14px 44px rgba(0,0,0,.65), inset 0 0 0 1px rgba(255,255,255,.07); }
+  .island > * { opacity:0; }
+  .island img { width:44px; height:44px; border-radius:12px; object-fit:cover; flex:none; }
+  .island .t { font-size:14px; line-height:1.25; white-space:nowrap; }
+  .island .t b { display:block; font-weight:600; }
+  .island .t span { color:#a6a6ae; }
+  .island .ok { margin-left:auto; width:28px; height:28px; border-radius:50%; flex:none; display:grid; place-items:center; background:var(--chrome-x); color:#000; font-weight:700; font-size:14px; }
+
+  /* nav */
+  .nav { position:fixed; top:max(14px, env(safe-area-inset-top)); left:50%; transform:translateX(-50%); z-index:60; display:flex; align-items:center; gap:2px; padding:6px; border-radius:999px; white-space:nowrap;
+    background:rgba(16,16,19,.55) padding-box, linear-gradient(120deg, rgba(255,255,255,.45), rgba(255,255,255,.06) 40%, rgba(255,255,255,.3)) border-box; border:1px solid transparent; backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%); }
+  .nav a, .nav button { font:500 14px/1 "Inter Tight", sans-serif; color:var(--ink); text-decoration:none; padding:11px 14px; border-radius:999px; border:0; background:none; cursor:pointer; transition:background .25s; }
+  .nav a:hover, .nav button:hover { background:rgba(255,255,255,.08); }
+  .nav .logo { padding:6px 12px; display:flex; flex:none; }
+  .nav .logo img { height:22px; width:auto; max-width:none; }
+  .nav .pill { background:var(--chrome-x); color:#0b0b0d; font-weight:600; font-variant-numeric:tabular-nums; box-shadow:inset 0 1px 0 rgba(255,255,255,.9), inset 0 -2px 6px rgba(0,0,0,.25); }
+  .nav .pill:hover { background:var(--chrome-x); filter:brightness(1.08); }
+
+  /* hero */
+  .hero { position:relative; min-height:100svh; display:grid; place-items:center; text-align:center; overflow:hidden; isolation:isolate; }
+  #fx { position:absolute; inset:0; width:100%; height:100%; display:block; z-index:-3; }
+  .hero::before { content:""; position:absolute; inset:0; z-index:-2; background:radial-gradient(62% 46% at 50% 56%, rgba(8,8,10,.72), rgba(8,8,10,.15) 70%, transparent); }
+  .hero::after { content:""; position:absolute; inset:auto 0 0 0; height:28vh; z-index:-1; background:linear-gradient(transparent, var(--bg)); }
+  .hero-inner { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:clamp(12px, 2vh, 20px); padding:clamp(96px, 14vh, 130px) var(--m) clamp(72px, 10vh, 110px); }
+  .kicker { display:inline-flex; align-items:center; gap:10px; font-size:14px; font-weight:500; padding:8px 14px 8px 10px; border-radius:999px; background:rgba(16,16,19,.6); border:1px solid var(--line); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+  .kicker i { width:9px; height:9px; border-radius:50%; background:radial-gradient(circle at 30% 30%, #fff, #8a8f98 60%, #1b1c1f); }
+  .logo-wrap { width:min(1080px, 88vw); animation:bob 6s ease-in-out infinite; }
+  .logo-wrap img { display:block; width:100%; height:auto; filter:drop-shadow(0 30px 50px rgba(0,0,0,.6)); }
+  .logo-wrap img.melting { filter:url(#melt) drop-shadow(0 30px 50px rgba(0,0,0,.6)); }
+  @keyframes bob { 50% { transform:translateY(-12px); } }
+  .hero h1 { font:800 clamp(24px, 3.9vw, 56px)/1.05 var(--display); letter-spacing:-.02em; filter:drop-shadow(0 3px 14px rgba(0,0,0,.75)); max-width:22ch; }
+  .hero p { color:#d9d9de; max-width:44ch; text-shadow:0 2px 12px rgba(0,0,0,.8); }
+  .ctas { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:6px; }
+  .btn { position:relative; display:inline-flex; align-items:center; gap:10px; padding:16px 24px; border-radius:999px; font:600 16px/1 "Inter Tight", sans-serif; text-decoration:none; cursor:pointer; border:0; overflow:hidden; transition:transform .5s var(--spring); }
+  .btn:active { transform:scale(.95); transition-duration:.12s; }
+  .btn.metal { background:var(--chrome-x); color:#0b0b0d; box-shadow:inset 0 1px 0 #fff, inset 0 -3px 8px rgba(0,0,0,.28), 0 10px 30px rgba(0,0,0,.45); }
+  .btn.metal::after { content:""; position:absolute; inset:0; background:linear-gradient(105deg, transparent 35%, rgba(255,255,255,.85) 50%, transparent 65%); transform:translateX(-120%); transition:transform .8s var(--ease); }
+  .btn.metal:hover::after { transform:translateX(120%); }
+  .btn.ghost { color:var(--ink); background:rgba(16,16,19,.55); border:1px solid rgba(255,255,255,.22); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+  .btn.ghost:hover { border-color:rgba(255,255,255,.5); }
+  .st { position:absolute; z-index:1; pointer-events:none; }
+  .st img { display:block; width:100%; height:auto; animation:spin 18s linear infinite; filter:drop-shadow(0 14px 22px rgba(0,0,0,.55)); }
+  .st.r img { animation-direction:reverse; animation-duration:26s; }
+  .st.bf img { animation:flutter 3.2s ease-in-out infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @keyframes flutter { 50% { transform:rotate(-8deg) scaleX(.86); } }
+  .scroll-hint { position:absolute; bottom:22px; left:50%; transform:translateX(-50%); z-index:2; display:flex; flex-direction:column; align-items:center; gap:8px; font-size:13px; color:var(--soft); }
+  .scroll-hint .drop { position:relative; width:14px; height:14px; animation:drip 2.2s ease-in infinite; }
+  @keyframes drip { 0% { transform:translateY(-6px) scale(.8); opacity:0; } 30% { opacity:1; } 100% { transform:translateY(22px) scale(1.1, .9); opacity:0; } }
+
+  /* marquee */
+  .marquee { position:relative; z-index:2; overflow:hidden; padding:18px 0; background:linear-gradient(180deg, #17181b, #0d0d10); border-block:1px solid rgba(255,255,255,.14); }
+  .mq-track { display:flex; align-items:center; width:max-content; animation:slide 26s linear infinite; }
+  .motion .mq-track { animation:none; }
+  .mq-track span { font:800 clamp(22px, 3vw, 42px)/1 var(--display); letter-spacing:-.02em; white-space:nowrap; padding:0 22px; }
+  .mq-track img { width:clamp(22px, 2.4vw, 34px); height:auto; }
+  @keyframes slide { to { transform:translateX(-50%); } }
+
+  /* spotlight: one product, pinned, lines change (static stack without motion) */
+  .spot { position:relative; padding:clamp(80px, 10vw, 140px) var(--m); text-align:center; }
+  .spot-img { width:min(420px, 72vw); aspect-ratio:4/5; margin:0 auto 32px; border-radius:30px; overflow:hidden; box-shadow:0 40px 90px rgba(0,0,0,.6); }
+  .spot-img img { width:100%; height:100%; object-fit:cover; display:block; }
+  .spot-lines p { font:800 clamp(26px, 4.4vw, 64px)/1.05 var(--display); letter-spacing:-.03em; margin-bottom:.3em; }
+  .motion .spot { height:100svh; padding:0; overflow:hidden; }
+  .motion .spot-stage { position:relative; height:100%; display:grid; place-items:center; }
+  .motion .spot-img { position:absolute; left:50%; top:50%; width:min(46svh, 72vw); margin:0; translate:-50% -56%; }
+  .motion .spot-lines { position:absolute; left:var(--m); right:var(--m); bottom:clamp(40px, 9svh, 96px); height:2.4em; font-size:clamp(26px, 4.4vw, 64px); }
+  .motion .spot-lines p { position:absolute; inset:0; margin:0; }
+  .spot .drop { width:80px; height:80px; right:12vw; top:18%; }
+
+  section { position:relative; }
+  .wrap { padding:0 var(--m); }
+  .sec-head { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:30px; }
+  .sec-title { font:800 clamp(40px, 7.4vw, 124px)/.92 var(--display); letter-spacing:-.035em; }
+  .sec-head p { color:var(--soft); max-width:30ch; text-align:right; }
+
+  /* products */
+  .drop-sec { padding:clamp(80px, 11vw, 160px) 0 clamp(64px, 8vw, 120px); }
+  .drop-sec > .drop { width:120px; height:120px; right:6vw; top:40px; }
+  .rail { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; padding:0 var(--m); }
+  .slot { perspective:1100px; }
+  .card { position:relative; height:100%; display:flex; flex-direction:column; border-radius:24px; padding:12px;
+    background:linear-gradient(var(--bg2), var(--bg2)) padding-box, linear-gradient(150deg, rgba(255,255,255,.42), rgba(255,255,255,.05) 38%, rgba(255,255,255,.04) 62%, rgba(255,255,255,.3)) border-box; border:1px solid transparent;
+    transform:rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition:transform .45s var(--ease); }
+  .card::after { content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0; transition:opacity .3s; background:radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgba(255,255,255,.16), transparent 45%); }
+  .card:hover::after { opacity:1; }
+  .art { position:relative; aspect-ratio:4/5; border-radius:16px; overflow:hidden; background:#0c0c0e; }
+  .art img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition:transform .7s var(--ease); }
+  .card:hover .art img { transform:scale(1.07); }
+  .art::after { content:""; position:absolute; inset:0; background:linear-gradient(115deg, transparent 40%, rgba(255,255,255,.22) 50%, transparent 60%); transform:translateX(-120%); transition:transform 1s var(--ease); pointer-events:none; }
+  .card:hover .art::after { transform:translateX(120%); }
+  .tag { position:absolute; top:12px; left:12px; z-index:1; font-size:12px; font-weight:600; padding:6px 11px; border-radius:999px; background:var(--chrome-x); color:#0b0b0d; }
+  .info { display:flex; justify-content:space-between; align-items:baseline; gap:8px; padding:16px 6px 6px; }
+  .info h3 { font:800 clamp(15px, 1.35vw, 19px)/1.15 var(--display); letter-spacing:-.02em; text-transform:uppercase; }
+  .price { font-variant-numeric:tabular-nums; font-weight:600; }
+  .sub { color:var(--soft); font-size:14px; padding:0 6px 14px; }
+  .row { display:flex; gap:6px; padding:0 6px 6px; margin-top:auto; }
+  .size { flex:1; min-height:42px; border-radius:12px; border:1px solid var(--line); background:rgba(255,255,255,.03); color:var(--ink); font:600 14px/1 "Inter Tight", sans-serif; cursor:pointer; transition:background .2s, color .2s, border-color .2s; }
+  .size:hover { border-color:rgba(255,255,255,.35); }
+  .size[aria-pressed="true"] { background:var(--chrome-x); color:#0b0b0d; border-color:transparent; }
+  .add { width:calc(100% - 12px); margin:6px; min-height:50px; border-radius:999px; border:0; background:var(--chrome-x); color:#0b0b0d; font:600 15px/1 "Inter Tight", sans-serif; cursor:pointer; box-shadow:inset 0 1px 0 #fff, inset 0 -3px 8px rgba(0,0,0,.25); transition:transform .5s var(--spring); }
+  .add:active { transform:scale(.95); transition-duration:.12s; }
+
+  /* statement */
+  .say { padding:clamp(96px, 13vw, 210px) var(--m); }
+  .say p { font:800 clamp(30px, 5.4vw, 92px)/1.02 var(--display); letter-spacing:-.035em; max-width:16em; }
+  .say p span { background:var(--chrome); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .say .d1 { width:90px; height:90px; right:8vw; top:18%; }
+  .say .d2 { width:40px; height:40px; right:22vw; top:60%; animation-delay:-2s; }
+
+  /* fit bento */
+  .bento { display:grid; grid-template-columns:repeat(12, 1fr); grid-auto-rows:minmax(150px, auto); gap:16px; padding:0 var(--m) clamp(96px, 12vw, 180px); }
+  .tile { position:relative; border-radius:24px; padding:26px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; gap:18px;
+    background:linear-gradient(var(--bg2), var(--bg2)) padding-box, linear-gradient(150deg, rgba(255,255,255,.32), rgba(255,255,255,.04) 45%, rgba(255,255,255,.2)) border-box; border:1px solid transparent; }
+  .tile h3 { font:800 clamp(22px, 2.3vw, 36px)/1.02 var(--display); letter-spacing:-.025em; }
+  .tile p { color:var(--soft); max-width:38ch; }
+  .t1 { grid-column:span 7; grid-row:span 2; }
+  .t1 .drop { width:46%; aspect-ratio:1; height:auto; right:-8%; top:-10%; opacity:.9; }
+  .t2, .t3 { grid-column:span 5; }
+  .t4 { grid-column:span 12; flex-direction:row; align-items:center; }
+  .big { font:800 clamp(96px, 14vw, 230px)/.82 var(--display); letter-spacing:-.05em; }
+  .swatches { display:flex; gap:14px; }
+  .swatches i { position:relative; width:52px; height:52px; border-radius:46% 54% 58% 42% / 52% 44% 56% 48%; animation:wobble 6s ease-in-out infinite;
+    background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.95) 0 7%, transparent 22%), radial-gradient(circle at 50% 55%, var(--c) 0 45%, color-mix(in srgb, var(--c) 45%, #000) 100%);
+    box-shadow:inset -5px -8px 14px rgba(0,0,0,.45), inset 4px 6px 10px rgba(255,255,255,.3); }
+  .swatches i:nth-child(2) { animation-delay:-1.5s; } .swatches i:nth-child(3) { animation-delay:-3s; } .swatches i:nth-child(4) { animation-delay:-4.5s; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chips span { padding:9px 14px; border-radius:999px; font-size:14px; font-weight:600; background:var(--chrome-x); color:#0b0b0d; }
+  .chips span.soft { background:none; color:var(--ink); border:1px solid var(--line); font-weight:500; }
+
+  /* faq */
+  .faq { padding:0 var(--m) clamp(96px, 12vw, 180px); display:grid; grid-template-columns:5fr 7fr; gap:40px; }
+  .faq .sec-title { position:sticky; top:110px; align-self:start; }
+  details { border-radius:20px; margin-bottom:10px; background:linear-gradient(var(--bg2), var(--bg2)) padding-box, linear-gradient(150deg, rgba(255,255,255,.28), rgba(255,255,255,.04) 50%, rgba(255,255,255,.16)) border-box; border:1px solid transparent; }
+  summary { list-style:none; cursor:pointer; padding:22px 24px; font-weight:600; font-size:clamp(18px, 1.4vw, 21px); display:flex; justify-content:space-between; gap:16px; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; font-weight:400; font-size:24px; line-height:1; transition:transform .45s var(--spring); }
+  details[open] summary::after { transform:rotate(45deg); }
+  details p { padding:0 24px 22px; color:var(--soft); max-width:62ch; overflow:hidden; }
+
+  /* footer */
+  footer { position:relative; overflow:hidden; padding:64px var(--m) 40px; border-top:1px solid var(--line); }
+  .foot-logo { width:min(1200px, 92vw); margin:0 auto 40px; display:block; }
+  .foot-logo img { display:block; width:100%; height:auto; filter:url(#wobble); }
+  footer > .drop { width:70px; height:70px; left:6vw; top:34px; }
+  .foot-row { display:flex; justify-content:space-between; gap:24px 32px; flex-wrap:wrap; color:var(--soft); font-size:14px; }
+  .foot-row nav { display:flex; gap:20px; flex-wrap:wrap; }
+  .foot-row a { text-decoration:none; color:var(--ink); }
+  .foot-row a:hover { text-decoration:underline; }
+  .linkbtn { background:none; border:0; color:var(--ink); font:inherit; cursor:pointer; padding:0; text-decoration:underline; text-underline-offset:4px; }
+  body.paused *, body.paused *::before, body.paused *::after { animation-play-state:paused !important; }
+
+  @media (max-width:900px) {
+    .rail { grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:78%; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:10px; scrollbar-width:none; }
+    .rail::-webkit-scrollbar { display:none; }
+    .slot { scroll-snap-align:center; }
+    .bento > * { grid-column:span 12 !important; }
+    .t4 { flex-direction:column; align-items:flex-start; }
+    .faq { grid-template-columns:1fr; }
+    .faq .sec-title { position:static; }
+    .hide-s { display:none !important; }
+  }
+  @media (max-width:640px) {
+    .sec-head { flex-direction:column; align-items:flex-start; }
+    .sec-head p { text-align:left; }
+    .drop-sec > .drop { width:70px; height:70px; top:56px; }
+    .say .d2, footer > .drop { display:none; }
+    .motion .spot-img { width:min(52svh, 78vw); translate:-50% -60%; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    *, *::before, *::after { animation:none !important; }
+    .card, .art img, .btn, .add, summary::after { transition:none !important; }
+    .card:hover .art img { transform:scale(1.02); }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="cover" aria-hidden="true"></div>
+<div class="island" aria-hidden="true"><img src="media/prod-sand.jpg" alt="" width="1000" height="1241"><div class="t"><b>Added to cart</b><span></span></div><div class="ok">✓</div></div>
+
+<!-- liquid filters: melt-in for the hero logo, wobble for the footer logo -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="melt" x="-20%" y="-30%" width="140%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.008 0.022" numOctaves="2" seed="7"/><feDisplacementMap id="meltDisp" in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="wobble" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="3"/><feDisplacementMap id="wobbleDisp" in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter>
+</svg>
+
+<nav class="nav" aria-label="Main">
+  <a class="logo" href="#top"><img src="media/y2k-logo.webp" alt="SLOUCH" width="1600" height="441"></a>
+  <a href="#drop">Drop 01</a>
+  <a class="hide-s" href="#fit">Fit</a>
+  <a class="hide-s" href="#faq">FAQ</a>
+  <button class="pill" id="cart" type="button" aria-live="polite">Cart (0)</button>
+</nav>
+
+<main id="main">
+  <section class="hero" id="top" aria-label="Introduction">
+    <canvas id="fx" aria-hidden="true"></canvas>
+    <span class="st" data-depth="1.2" style="width:clamp(70px, 9vw, 150px); left:7%; top:16%"><img src="media/y2k-star1.webp" alt="" width="511" height="520"></span>
+    <span class="st r" data-depth=".7" style="width:clamp(40px, 4.5vw, 76px); left:20%; top:70%"><img src="media/y2k-star5.webp" alt="" width="442" height="429"></span>
+    <span class="st bf" data-depth="1.5" style="width:clamp(80px, 10vw, 170px); right:7%; top:14%"><img src="media/y2k-butterfly.webp" alt="" width="520" height="430"></span>
+    <span class="st r hide-s" data-depth=".9" style="width:clamp(60px, 7vw, 120px); right:13%; top:66%"><img src="media/y2k-star2.webp" alt="" width="508" height="520"></span>
+    <span class="st hide-s" data-depth=".5" style="width:clamp(30px, 3vw, 52px); left:44%; top:12%"><img src="media/y2k-star6.webp" alt="" width="341" height="332"></span>
+    <div class="hero-inner">
+      <span class="kicker"><i aria-hidden="true"></i>Drop 01 · preview</span>
+      <div class="logo-wrap"><img id="hero-logo" src="media/y2k-logo.webp" alt="SLOUCH" width="1600" height="441" fetchpriority="high"></div>
+      <h1 class="chrome" id="hero-h1">Wear it like you don’t care.</h1>
+      <p>Heavyweight cotton hoodies, sweatshirts and tees, cut a size too big.</p>
+      <div class="ctas"><a class="btn metal" href="#drop">Shop Drop 01 <span aria-hidden="true">→</span></a><a class="btn ghost" href="#fit">See the fit</a></div>
+    </div>
+    <div class="scroll-hint" aria-hidden="true"><span class="drop"></span>Scroll</div>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div class="mq-track">
+    <span class="chrome">Heavyweight cotton</span><img src="media/y2k-star3.webp" alt="" width="505" height="520"><span class="chrome">Cut a size too big</span><img src="media/y2k-star4.webp" alt="" width="520" height="364"><span class="chrome">Drop 01</span><img src="media/y2k-star3.webp" alt="" width="505" height="520"><span class="chrome">14-day EU returns</span><img src="media/y2k-star4.webp" alt="" width="520" height="364"><span class="chrome">Zero effort</span><img src="media/y2k-star3.webp" alt="" width="505" height="520">
+    <span class="chrome">Heavyweight cotton</span><img src="media/y2k-star3.webp" alt="" width="505" height="520"><span class="chrome">Cut a size too big</span><img src="media/y2k-star4.webp" alt="" width="520" height="364"><span class="chrome">Drop 01</span><img src="media/y2k-star3.webp" alt="" width="505" height="520"><span class="chrome">14-day EU returns</span><img src="media/y2k-star4.webp" alt="" width="520" height="364"><span class="chrome">Zero effort</span><img src="media/y2k-star3.webp" alt="" width="505" height="520">
+  </div></div>
+
+  <section class="spot" aria-label="Sand Hoodie close-up">
+    <div class="spot-stage">
+      <span class="drop" aria-hidden="true"></span>
+      <div class="spot-img"><img src="media/prod-sand.jpg" alt="Sand beige oversized hoodie" width="1000" height="1241" loading="lazy"></div>
+      <div class="spot-lines">
+        <p class="chrome">Heavyweight cotton.</p>
+        <p class="chrome">Cut a size too big.</p>
+        <p class="chrome">Made to do nothing in.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="drop-sec" id="drop" aria-labelledby="drop-h">
+    <span class="drop" aria-hidden="true"></span>
+    <div class="wrap sec-head">
+      <h2 id="drop-h" class="sec-title chrome split">Drop 01</h2>
+      <p class="rise">Four pieces. Pick a size, add it, done.</p>
+    </div>
+    <div class="rail">
+      <div class="slot"><article class="card" data-name="Cloud Crewneck" data-img="media/prod-crew.jpg">
+        <div class="art"><img src="media/prod-crew.jpg" alt="Light grey oversized crewneck sweatshirt" width="1000" height="1241" loading="lazy"><span class="tag">Sweatshirt</span></div>
+        <div class="info"><h3>Cloud Crewneck</h3><span class="price">€39</span></div>
+        <p class="sub">Light grey · loose body, long sleeves</p>
+        <div class="row" role="group" aria-label="Size"><button class="size" type="button" aria-pressed="false">S</button><button class="size" type="button" aria-pressed="true">M</button><button class="size" type="button" aria-pressed="false">L</button><button class="size" type="button" aria-pressed="false">XL</button></div>
+        <button class="add" type="button">Add to cart</button>
+      </article></div>
+      <div class="slot"><article class="card" data-name="Boxy Tee" data-img="media/prod-tee.jpg">
+        <div class="art"><img src="media/prod-tee.jpg" alt="Off-white oversized boxy t-shirt" width="1000" height="1241" loading="lazy"><span class="tag">Tee</span></div>
+        <div class="info"><h3>Boxy Tee</h3><span class="price">€24</span></div>
+        <p class="sub">Off white · wide on the shoulder</p>
+        <div class="row" role="group" aria-label="Size"><button class="size" type="button" aria-pressed="false">S</button><button class="size" type="button" aria-pressed="true">M</button><button class="size" type="button" aria-pressed="false">L</button><button class="size" type="button" aria-pressed="false">XL</button></div>
+        <button class="add" type="button">Add to cart</button>
+      </article></div>
+      <div class="slot"><article class="card" data-name="Sand Hoodie" data-img="media/prod-sand.jpg">
+        <div class="art"><img src="media/prod-sand.jpg" alt="Sand beige oversized hoodie" width="1000" height="1241" loading="lazy"><span class="tag">Hoodie</span></div>
+        <div class="info"><h3>Sand Hoodie</h3><span class="price">€45</span></div>
+        <p class="sub">Beige · front pocket, deep hood</p>
+        <div class="row" role="group" aria-label="Size"><button class="size" type="button" aria-pressed="false">S</button><button class="size" type="button" aria-pressed="true">M</button><button class="size" type="button" aria-pressed="false">L</button><button class="size" type="button" aria-pressed="false">XL</button></div>
+        <button class="add" type="button">Add to cart</button>
+      </article></div>
+      <div class="slot"><article class="card" data-name="Moss Hoodie" data-img="media/prod-moss.jpg">
+        <div class="art"><img src="media/prod-moss.jpg" alt="Moss olive oversized hoodie" width="1000" height="1241" loading="lazy"><span class="tag">Hoodie</span></div>
+        <div class="info"><h3>Moss Hoodie</h3><span class="price">€45</span></div>
+        <p class="sub">Olive · front pocket, deep hood</p>
+        <div class="row" role="group" aria-label="Size"><button class="size" type="button" aria-pressed="false">S</button><button class="size" type="button" aria-pressed="true">M</button><button class="size" type="button" aria-pressed="false">L</button><button class="size" type="button" aria-pressed="false">XL</button></div>
+        <button class="add" type="button">Add to cart</button>
+      </article></div>
+    </div>
+  </section>
+
+  <section class="say" aria-label="What it is">
+    <span class="drop d1" aria-hidden="true"></span><span class="drop d2" aria-hidden="true"></span>
+    <p id="say">Heavy cotton. Wide shoulders. One size bigger than you need. Made for doing nothing in style.</p>
+  </section>
+
+  <section id="fit" aria-labelledby="fit-h">
+    <div class="wrap sec-head"><h2 id="fit-h" class="sec-title chrome split">The fit</h2><p class="rise">How it sits, what it’s made of, how to pick a size.</p></div>
+    <div class="bento">
+      <div class="tile t1"><span class="drop" aria-hidden="true"></span><h3>Cut a size<br>too big</h3><div><div class="big chrome">+1</div><p>Oversized on purpose: loose through the body with a dropped shoulder. Take your usual size for the look, or one up for more room.</p></div></div>
+      <div class="tile t2"><h3>Heavyweight cotton</h3><p>Thick, soft, holds its shape. The exact blend and weight will be listed on every product.</p></div>
+      <div class="tile t3"><h3>Four colours</h3><div class="swatches" role="img" aria-label="Cloud grey, off white, sand, moss"><i style="--c:#c3c5c9"></i><i style="--c:#e9e5dc"></i><i style="--c:#c8b28a"></i><i style="--c:#5b6b35"></i></div></div>
+      <div class="tile t4"><h3>Sizes S to XL</h3><div class="chips"><span>S</span><span>M</span><span>L</span><span>XL</span><span class="soft">EU size chart soon</span></div></div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq" aria-labelledby="faq-h">
+    <h2 id="faq-h" class="sec-title chrome split">FAQ</h2>
+    <div>
+      <details open><summary>How does it fit?</summary><p>Oversized by design. Take your usual size, or go one up for more room.</p></details>
+      <details><summary>Which size should I pick?</summary><p>Your usual size is the safe choice. A size chart with measurements will sit on every product page once the supplier’s numbers are confirmed.</p></details>
+      <details><summary>How long does delivery take?</summary><p>A delivery estimate will be shown at checkout, before you pay. Checkout is not live yet in this demo.</p></details>
+      <details><summary>Can I return it?</summary><p>Yes, within 14&nbsp;days inside the EU. The return shipping terms will be written here before launch.</p></details>
+      <details><summary>What is it made of?</summary><p>Heavyweight cotton. The exact blend and weight will be listed on each product.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span class="drop" aria-hidden="true"></span>
+  <a class="foot-logo" href="#top"><img src="media/y2k-logo.webp" alt="SLOUCH, back to top" width="1600" height="441" loading="lazy"></a>
+  <div class="foot-row">
+    <p>Demo storefront. Product images are AI-generated renders, prices are placeholders and the pieces are not for sale yet.</p>
+    <nav aria-label="Footer"><a href="#drop">Drop 01</a><a href="#fit">Fit</a><a href="#faq">FAQ</a><a href="mailto:hello@slouch.example">Contact</a><button class="linkbtn" id="motion" type="button">Pause motion</button></nav>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(() => {
+  const root = document.documentElement;
+  root.classList.add('js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(pointer: fine)').matches;
+  const G = window.gsap && window.ScrollTrigger ? window.gsap : null;
+  const motionOn = !!G && !reduce;
+  if (motionOn) root.classList.add('motion');
+  const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
+  let paused = false;
+  if (G) G.registerPlugin(ScrollTrigger, ...(window.SplitText ? [SplitText] : []));
+  const SPRING = 'elastic.out(1, .75)';           // iOS-like settle
+  const IOS = 'expo.out';
+
+  /* ---------- liquid metal background (WebGL) ---------- */
+  const cv = $('#fx');
+  const gl = cv.getContext('webgl', { antialias:false, premultipliedAlpha:false });
+  const mouse = { x:0, y:0, tx:0, ty:0, s:0, ts:0 };
+  let scrollP = 0, frozen = 0;
+  if (gl) {
+    const vs = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+    const fs = `precision highp float;uniform vec2 r;uniform float t;uniform vec2 m;uniform float md;uniform float sc;
+      vec2 h2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return -1.+2.*fract(sin(p)*43758.5453);}
+      float n(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);
+        return mix(mix(dot(h2(i),f),dot(h2(i+vec2(1.,0.)),f-vec2(1.,0.)),u.x),mix(dot(h2(i+vec2(0.,1.)),f-vec2(0.,1.)),dot(h2(i+1.),f-1.),u.x),u.y);}
+      float fbm(vec2 p){float v=0.,a=.5;for(int k=0;k<4;k++){v+=a*n(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
+      float H(vec2 p){float q=fbm(p*1.1+vec2(t*.04,-t*.03));float h=fbm(p*1.6+q*1.8+vec2(-t*.05,t*.02));
+        vec2 d=p-m;float dd=length(d);h+=md*.2*sin(dd*22.-t*5.)*exp(-dd*5.);return h;}
+      void main(){vec2 uv=gl_FragCoord.xy/r;vec2 p=(gl_FragCoord.xy-.5*r)/r.y;float e=1.5/r.y;
+        float hx=H(p+vec2(e,0.))-H(p-vec2(e,0.));float hy=H(p+vec2(0.,e))-H(p-vec2(0.,e));
+        vec3 nr=normalize(vec3(-hx/(2.*e)*.35,-hy/(2.*e)*.35,1.));vec3 rf=reflect(vec3(0.,0.,-1.),nr);
+        float b=.5+.5*cos(9.*rf.y+4.*rf.x+1.3);float b2=.5+.5*cos(23.*rf.y-6.*rf.x);
+        float c=pow(b,2.4)*.85+pow(b2,8.)*.35;vec3 col=vec3(c);
+        vec3 iri=.5+.5*cos(6.2831*(rf.x*1.4+rf.y*.8+vec3(0.,.33,.67)));col+=iri*.07*(1.-c);
+        col=mix(col,vec3(1.),pow(1.-nr.z,2.)*.25);col*=.6;col*=1.-.55*length(uv-.5);col*=1.-.65*sc;
+        gl_FragColor=vec4(col,1.);}`;
+    const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+    const pr = gl.createProgram();
+    gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(pr); gl.useProgram(pr);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    const U = k => gl.getUniformLocation(pr, k), uR = U('r'), uT = U('t'), uM = U('m'), uMD = U('md'), uSC = U('sc');
+    const size = () => { const s = Math.min(devicePixelRatio, 1.5) * (innerWidth < 700 ? .45 : .55); cv.width = Math.max(2, cv.clientWidth * s); cv.height = Math.max(2, cv.clientHeight * s); gl.viewport(0, 0, cv.width, cv.height); };
+    size(); addEventListener('resize', size);
+    if (fine && !reduce) addEventListener('pointermove', e => {
+      mouse.tx = (e.clientX / innerWidth - .5) * (innerWidth / innerHeight); mouse.ty = .5 - e.clientY / innerHeight; mouse.ts = 1;
+    }, { passive:true });
+    let visible = true; const t0 = performance.now();
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; }).observe(cv);
+    const draw = now => {
+      mouse.x += (mouse.tx - mouse.x) * .08; mouse.y += (mouse.ty - mouse.y) * .08;
+      mouse.s += (mouse.ts - mouse.s) * .06; mouse.ts *= .97;
+      if (!paused && !reduce) frozen = (now - t0) / 1000;
+      gl.uniform2f(uR, cv.width, cv.height); gl.uniform1f(uT, reduce ? 12 : frozen);
+      gl.uniform2f(uM, mouse.x, mouse.y); gl.uniform1f(uMD, mouse.s); gl.uniform1f(uSC, scrollP);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    };
+    if (reduce) draw(0);
+    else { const loop = now => { if (visible && !document.hidden) draw(now); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+  }
+
+  /* ---------- Dynamic-Island notice ---------- */
+  const island = $('.island'), iImg = $('img', island), iTxt = $('.t span', island), iHead = $('.t b', island);
+  let islandTl = null;
+  const notify = (head, line, img) => {
+    iHead.textContent = head; iTxt.textContent = line; if (img) iImg.src = img; iImg.hidden = !img;
+    if (!motionOn) return;
+    const w = Math.min(380, innerWidth - 24);
+    if (islandTl) islandTl.kill();
+    islandTl = G.timeline()
+      .set(island, { opacity:1, width:126, height:38, marginLeft:-63, borderRadius:19 })
+      .to(island, { width:w, height:img ? 68 : 52, marginLeft:-w / 2, borderRadius:img ? 34 : 26, duration:.7, ease:SPRING })
+      .to(island.children, { opacity:1, duration:.25, stagger:.05 }, '-=.45')
+      .to(island.children, { opacity:0, duration:.2 }, '+=1.6')
+      .to(island, { width:126, height:38, marginLeft:-63, borderRadius:19, duration:.45, ease:'power3.inOut' })
+      .to(island, { opacity:0, duration:.25 });
+  };
+
+  /* ---------- cart: sizes, add ---------- */
+  const cart = $('#cart'); let n = 0;
+  $$('.row').forEach(g => g.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    g.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    if (motionOn) G.fromTo(b, { scale:.86 }, { scale:1, duration:.6, ease:SPRING });
+  }));
+  $$('.add').forEach(b => b.addEventListener('click', () => {
+    const card = b.closest('.card'), size = $('.size[aria-pressed="true"]', card);
+    cart.textContent = `Cart (${++n})`;
+    b.textContent = 'Added ✓'; setTimeout(() => { b.textContent = 'Add to cart'; }, 1200);
+    notify('Added to cart', `${card.dataset.name} · size ${size ? size.textContent : 'M'}`, card.dataset.img);
+    if (motionOn) G.fromTo(cart, { scale:1.18 }, { scale:1, duration:.8, ease:SPRING });
+  }));
+  cart.addEventListener('click', () => {
+    if (motionOn) notify('Checkout soon', 'This is a demo store, nothing is charged.', null);
+    else { cart.textContent = 'Checkout soon'; setTimeout(() => { cart.textContent = `Cart (${n})`; }, 1600); }
+  });
+
+  /* ---------- card tilt + glare ---------- */
+  if (fine && !reduce) $$('.card').forEach(c => {
+    c.addEventListener('pointermove', e => {
+      const b = c.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+      c.style.setProperty('--ry', (x - .5) * 12 + 'deg'); c.style.setProperty('--rx', (.5 - y) * 10 + 'deg');
+      c.style.setProperty('--gx', x * 100 + '%'); c.style.setProperty('--gy', y * 100 + '%');
+    });
+    c.addEventListener('pointerleave', () => { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); });
+  });
+
+  /* ---------- FAQ: smooth open/close ---------- */
+  $$('details').forEach(d => {
+    const s = $('summary', d), p = $('p', d);
+    s.addEventListener('click', e => {
+      if (!motionOn) return;
+      e.preventDefault();
+      if (d.open) G.to(p, { height:0, opacity:0, duration:.35, ease:'power2.inOut', onComplete:() => { d.open = false; G.set(p, { clearProps:'all' }); } });
+      else { d.open = true; G.from(p, { height:0, opacity:0, filter:'blur(6px)', duration:.6, ease:IOS, clearProps:'all' }); }
+    });
+  });
+
+  /* ---------- pause all motion ---------- */
+  const motion = $('#motion');
+  motion.addEventListener('click', () => {
+    paused = !paused;
+    document.body.classList.toggle('paused', paused);
+    if (G) G.globalTimeline.paused(paused);
+    motion.textContent = paused ? 'Play motion' : 'Pause motion';
+  });
+  if (!motionOn) { if (reduce) motion.hidden = true; return; }   // static page from here on
+
+  /* ---------- smooth scroll ---------- */
+  let lenis = null;
+  if (window.Lenis) {
+    lenis = new Lenis({ lerp:.09 });
+    lenis.on('scroll', ScrollTrigger.update);
+    G.ticker.add(t => lenis.raf(t * 1000)); G.ticker.lagSmoothing(0);
+    $$('a[href^="#"]:not(.skip)').forEach(a => a.addEventListener('click', e => {
+      const el = $(a.getAttribute('href')); if (!el) return;
+      e.preventDefault(); lenis.scrollTo(el, { offset:el.id === 'top' ? 0 : -90, duration:1.3 });
+    }));
+  }
+
+  /* ---------- blur-in helper (Apple-style reveal) ---------- */
+  const blurIn = (targets, trigger, extra = {}) => G.from(targets, Object.assign({
+    y:40, opacity:0, filter:'blur(14px)', duration:1.1, ease:IOS, stagger:.09, clearProps:'filter',
+    scrollTrigger:{ trigger, start:'top 85%' },
+  }, extra));
+
+  /* ---------- stars: mouse depth + scroll drift ---------- */
+  const stars = $$('.st');
+  stars.forEach(s => {
+    const k = +s.dataset.depth || 1;
+    G.to(s, { yPercent:-90 * k, ease:'none', scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true } });
+    if (fine) {
+      const qx = G.quickTo(s, 'x', { duration:1.2, ease:'power3' }), qy = G.quickTo(s, 'y', { duration:1.2, ease:'power3' });
+      addEventListener('pointermove', e => { qx((e.clientX / innerWidth - .5) * 70 * k); qy((e.clientY / innerHeight - .5) * 50 * k); }, { passive:true });
+    }
+  });
+
+  /* ---------- hero leaves like an Apple page: scale down, blur, fade ---------- */
+  ScrollTrigger.create({ trigger:'.hero', start:'top top', end:'bottom top', onUpdate:s => { scrollP = s.progress; } });
+  G.to('.hero-inner', { scale:.86, opacity:0, filter:'blur(12px)', ease:'none', scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true } });
+
+  /* ---------- marquee: speed follows scroll velocity ---------- */
+  const loop = G.to('.mq-track', { xPercent:-50, repeat:-1, duration:26, ease:'none' });
+  let boost = 0, dir = 1;
+  ScrollTrigger.create({ onUpdate:s => { dir = s.direction; boost = Math.min(Math.abs(s.getVelocity()) / 260, 6); } });
+  G.ticker.add(() => { boost *= .93; loop.timeScale(dir * (1 + boost)); });
+
+  /* ---------- spotlight: pinned product, lines swap (iPhone page style) ---------- */
+  const lines = $$('.spot-lines p');
+  G.set(lines, { opacity:0, y:30, filter:'blur(10px)' });
+  const spot = G.timeline({ scrollTrigger:{ trigger:'.spot', start:'top top', end:'+=220%', pin:true, scrub:.6 } });
+  spot.fromTo('.spot-img', { scale:1.9, borderRadius:0 }, { scale:1, borderRadius:30, ease:'power2.out', duration:3 })
+    .to('.spot-img img', { scale:1.12, ease:'none', duration:7 }, 0)
+    .to('.spot .drop', { y:-160, rotate:90, ease:'none', duration:7 }, 0);
+  lines.forEach((l, i) => {
+    const at = 1.6 + i * 1.8;
+    spot.to(l, { opacity:1, y:0, filter:'blur(0px)', duration:.7, ease:'power2.out' }, at);
+    if (i < lines.length - 1) spot.to(l, { opacity:0, y:-30, filter:'blur(10px)', duration:.6, ease:'power2.in' }, at + 1.2);
+  });
+
+  /* ---------- section headings: chars rise out of a mask ---------- */
+  const splits = [];
+  if (window.SplitText) $$('.split').forEach(h => {
+    const sp = new SplitText(h, { type:'chars', mask:'chars', charsClass:'cc' }); splits.push(sp);
+    h.classList.remove('chrome');
+    G.from(sp.chars, { yPercent:115, duration:1.1, ease:IOS, stagger:.035, scrollTrigger:{ trigger:h, start:'top 88%' } });
+  });
+  $$('.rise').forEach(el => blurIn(el, el));
+
+  /* ---------- product cards: rise from blur, staggered ---------- */
+  blurIn('.slot', '.rail', { y:90, scale:.92, duration:1.3, stagger:.12, clearProps:'filter,transform' });
+
+  /* ---------- statement: words light up as you read ---------- */
+  const say = $('#say');
+  say.innerHTML = say.textContent.trim().split(/\s+/).map(w => `<span>${w}</span>`).join(' ');
+  G.fromTo('#say span', { opacity:.12 }, { opacity:1, ease:'none', stagger:.1, scrollTrigger:{ trigger:'#say', start:'top 80%', end:'bottom 45%', scrub:true } });
+  G.to('.say .d1', { y:-120, rotate:40, ease:'none', scrollTrigger:{ trigger:'.say', start:'top bottom', end:'bottom top', scrub:true } });
+  G.to('.say .d2', { y:-60, ease:'none', scrollTrigger:{ trigger:'.say', start:'top bottom', end:'bottom top', scrub:true } });
+
+  /* ---------- bento + faq ---------- */
+  blurIn('.tile', '.bento', { y:70, scale:.96 });
+  G.from('.chips span', { scale:0, duration:.8, ease:SPRING, stagger:.06, scrollTrigger:{ trigger:'.t4', start:'top 90%' } });
+  blurIn('details', '.faq', { y:30, stagger:.07 });
+
+  /* ---------- footer logo: liquid wobble on hover ---------- */
+  const wob = $('#wobbleDisp');
+  $('.foot-logo').addEventListener('pointerenter', () => G.fromTo(wob, { attr:{ scale:60 } }, { attr:{ scale:0 }, duration:1.6, ease:'elastic.out(1,.3)' }));
+  blurIn('.foot-logo', 'footer', { y:80, scale:.94, duration:1.4 });
+
+  /* ---------- intro: cover lifts, logo melts in from blur ---------- */
+  const logo = $('#hero-logo'), disp = $('#meltDisp'), h1 = $('#hero-h1'), cover = $('.cover');
+  const h1Split = window.SplitText ? new SplitText(h1, { type:'words,chars', mask:'chars', charsClass:'cc' }) : null;
+  if (h1Split) { splits.push(h1Split); h1.classList.remove('chrome'); }
+  logo.classList.add('melting');
+  if (lenis) lenis.stop();
+  G.timeline({ delay:.15 })
+    .to(cover, { opacity:0, duration:.9, ease:'power2.out', onComplete:() => { cover.remove(); if (lenis) lenis.start(); } })
+    .fromTo(disp, { attr:{ scale:200 } }, { attr:{ scale:0 }, duration:2.2, ease:IOS, onComplete:() => logo.classList.remove('melting') }, 0)
+    .from(logo, { opacity:0, scale:1.12, duration:1.8, ease:IOS }, 0)
+    .from(stars, { scale:0, opacity:0, rotate:-90, duration:1.4, ease:SPRING, stagger:.07 }, .4)
+    .from(h1Split ? h1Split.chars : h1, { yPercent:110, opacity:0, duration:1, ease:IOS, stagger:.016 }, .55)
+    .from('.kicker, .hero p, .ctas, .scroll-hint', { y:24, opacity:0, filter:'blur(10px)', duration:1, ease:IOS, stagger:.08, clearProps:'filter' }, .75);
+  setTimeout(() => { if (document.body.contains(cover)) { cover.remove(); if (lenis) lenis.start(); } }, 4000);
+
+  addEventListener('load', () => ScrollTrigger.refresh());
+  if (document.fonts) document.fonts.ready.then(() => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# working files, not part of the site
+.raw/
+.taste-skill/
+variant-*.html
+index-v1.html
+index-v2.html
+
+# old media with the AI model (not used on the site)
+media/v*.mp4
+media/p?.jpg
+media/foot.jpg
